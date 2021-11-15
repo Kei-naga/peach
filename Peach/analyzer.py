@@ -17,6 +17,7 @@ class Analyzer(object):
         """
         Called when Analyzer is used as default Pit parser. Produces a Peach DOM.
         """
+        print("analyzer.py")
         raise Exception("This analyzer cannot be used as parser.")
 
     def asDataElement(self, parent, args, dataBuffer):

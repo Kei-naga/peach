@@ -67,6 +67,7 @@ class ParseTemplate(object):
     dontCrack = False
 
     def __init__(self, configs=None):
+        print("parser Template")
         self._parser = etree.XMLParser(remove_comments=True)
         self._parser.resolvers.add(PeachResolver())
         if configs is None:
@@ -76,6 +77,7 @@ class ParseTemplate(object):
 
     def _getBooleanAttribute(self, node, name):
         """If node has no attribute named |name| return True."""
+        print("_getBooleanAttribute")
         v = self._getAttribute(node, name)
         if not v:
             return True
@@ -146,7 +148,9 @@ class ParseTemplate(object):
         """
         Parse a Peach XML file pointed to by uri.
         """
+        print("def parse")
         logging.info(highlight.info("Parsing %s" % uri))
+        # put the all contents of pits file in doc as element tree
         doc = etree.parse(uri, parser=self._parser, base_url="http://phed.org").getroot()
 
         if "_target" in self._configs:
@@ -163,7 +167,7 @@ class ParseTemplate(object):
 
         # try early to find configuration macros
         self.FindConfigurations(doc)
-
+        # change doc that is element tree to string
         xmlString = etree.tostring(doc)
 
         return self.parseString(xmlString, findConfigs=False)
@@ -176,6 +180,7 @@ class ParseTemplate(object):
         xml = self.substituteConfigVariables(xml)
 
         doc = etree.fromstring(xml, parser=self._parser, base_url="http://phed.org")
+        print("parseString finished")
         return self.HandleDocument(doc, findConfigs=findConfigs)
 
     def GetClassesInModule(self, module):
@@ -223,7 +228,7 @@ class ParseTemplate(object):
         return has_config
 
     def HandleDocument(self, doc, uri="", findConfigs=True):
-
+        print("HandleDocument")
         if findConfigs and self.FindConfigurations(doc):
             return self.parseString(etree.tostring(doc), findConfigs=False)
 
@@ -263,7 +268,8 @@ class ParseTemplate(object):
 
                 nsName = self._getAttribute(child, 'ns')
                 nsSrc = self._getAttribute(child, 'src')
-
+                # 2timed PaserTemplate
+                print("2timed Parser")
                 parser = ParseTemplate(self._configs)
                 ns = parser.parse(nsSrc)
 
@@ -287,12 +293,13 @@ class ParseTemplate(object):
 
             elif child_tag == 'PythonPath':
                 # Add a search path
-
+                print("PythonPath")
                 p = self.HandlePythonPath(child, peach)
                 peach.append(p)
                 sys.path.append(p.name)
 
             elif child_tag == 'Defaults':
+                print("Defaults")
                 self.HandleDefaults(child, peach)
 
         # one last check for unresolved macros
@@ -2332,6 +2339,7 @@ class ParseTemplate(object):
     # Handlers for Test ###################################################
 
     def HandleTest(self, node, parent):
+        print("HandleTest")
         # name
 
         name = self._getAttribute(node, 'name')
@@ -2664,15 +2672,14 @@ class ParseTemplate(object):
 
         if not haveLogger:
             logging.warning("Run '%s' does not have logging configured!" % name)
-
+        print("parser finished")
         return run
 
 
     def HandlePublisher(self, node, parent):
         params = []
-
+        print("HandlePublisher")
         publisher = Publisher()
-
         # class
 
         if node.get("class") is None:
@@ -2682,7 +2689,6 @@ class ParseTemplate(object):
             raise PeachException("Publisher class attribute is empty")
 
         publisher.classStr = publisherClass = self._getAttribute(node, "class")
-
         if node.get("name") is not None:
             publisher.name = self._getAttribute(node, "name")
 
@@ -2734,9 +2740,8 @@ class ParseTemplate(object):
             params.append([name, value])
 
         code = "PeachXml_%s(%s)" % (publisherClass, ",".join(str(v) for _,v in params))
-
+        print(code)
         pub = eval(code, globals(), locals())
-
         pub.domPublisher = publisher
         pub.parent = parent
         return pub
@@ -3178,4 +3183,3 @@ class ParseTemplate(object):
         return hint
 
 from Peach.Analyzers import *
-

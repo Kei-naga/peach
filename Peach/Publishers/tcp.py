@@ -21,7 +21,7 @@ def Debug(msg):
 #class Timeout(SoftException):
 #	def __init__(self, msg):
 #		self.msg = msg
-#	
+#
 #	def __str__(self):
 #		return self.msg
 
@@ -125,7 +125,7 @@ class Tcp(Publisher):
         @type	data: string
         @param	data: Data to send
         """
-
+        #print(data)
         if Peach.Engine.engine.Engine.debug:
             print(">>>>>>>>>>>>>>>>")
             print("tcp.Tcp.send():")

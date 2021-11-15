@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+print("engine")
 import atexit
 import logging
 
@@ -37,12 +39,14 @@ class EngineWatcher(object):
         """
         Called when a run is starting.
         """
+        print("start run")
         pass
 
     def OnRunFinished(self, run):
         """
         Called when a run is finished.
         """
+        print("run finished")
         pass
 
     def OnTestStarting(self, run, test, totalVariations):
@@ -296,6 +300,7 @@ class Engine(object):
         return totalCount
 
     def Run(self, args):
+        print("run")
         runName = "DefaultRun" if args.run is None else args.run
         self.restartFile = args.restartFile
         self.restartState = None
@@ -307,7 +312,9 @@ class Engine(object):
             self.pitFile = args.pit
         if self.pitFile.find("/") >= 0:
             self.pitFile = os.path.basename(self.pitFile)
+        # analyze.pit.pyへ(pitファイルを解析)
         self.peach = args.parser.asParser(args.pit)
+        print("back engine.py")
         run = None
         self.agent = AgentPlexer()
         self._agents = {}
@@ -326,6 +333,7 @@ class Engine(object):
             for logger in loggers:
                 self.watcher.watchers.append(logger)
         try:
+            print("starting run")
             self.watcher.OnRunStarting(run)
         except TypeError as t:
             print(t)
@@ -347,6 +355,7 @@ class Engine(object):
                     continue
                 elif skipToTest and test.name == skipToTestName:
                     skipToTest = False
+                print("def runtest")
                 self._runTest(run, test, False, self.testRange)
         else:
             logging.info("Configuring run with name %s." % runName)
@@ -370,6 +379,7 @@ class Engine(object):
                   (startCount, startCount + thisCount, totalCount))
             self._runTest(run, test, False, [startCount, startCount + thisCount])
         self.watcher.OnRunFinished(run)
+        print("run finished")
 
     def _startAgents(self, run, test):
         """
@@ -499,7 +509,9 @@ class Engine(object):
                     mutator.onTestCaseStarting(test, testCount, stateEngine)
                     # Run the test
                     try:
+                        print("Run the test")
                         actionValues = stateEngine.run(mutator)
+                        print("o")
                     except RedoTestException:
                         raise
                     except MemoryError:

@@ -22,5 +22,6 @@ class PitXmlAnalyzer(Analyzer):
         Called when Analyzer is used as default Pit parser.
         Should produce a Peach DOM.
         """
+        print("analyze.pit.py")
+        # go Engine.parser.py(def parse) & return PaeseTemplate
         return ParseTemplate(self.configs).parse(uri)
-

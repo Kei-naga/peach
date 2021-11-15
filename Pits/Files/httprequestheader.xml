@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Peach version="1.0"  author="who3411" description="curl HttpRequestHeader">
+    <!-- Include要素 -->
+    <Include ns="default" src="file:defaults.xml"/>
+
+    <!-- DataModel要素 -->
+    <DataModel name="HttpRequestHeader">
+        <!-- 'GET / HTTP/1.1' -->
+        <String name="HttpMethod" value="GET"/>
+        <String name="Space" value=" " type="char"/>
+        <String name="HttpRequestUri" value="/"/>
+        <String name="Space" value=" " type="char"/>
+        <String name="HttpVersion" value="HTTP/1.1"/>
+        <String name="Newline" value="\r\n"/>
+
+        <!-- 'Host: localhost:8000' -->
+        <String name="HostHeader" value="Host"/>
+        <String name="Colon" value=":" type="char"/>
+        <String name="Space" value=" " type="char"/>
+        <String name="HostValue" value="localhost:8000"/>
+        <String name="Newline" value="\r\n"/>
+
+        <!-- 'User-Agent: curl/7.54.0' -->
+        <String name="UserAgentHeader" value="User-Agent"/>
+        <String name="Colon" value=":" type="char"/>
+        <String name="Space" value=" " type="char"/>
+        <String name="UserAgentValue" value="curl/7.54.0"/>
+        <String name="Newline" value="\r\n"/>
+
+        <!-- 'Accept: */*' -->
+        <String name="AcceptHeader" value="Accept"/>
+        <String name="Colon" value=":" type="char"/>
+        <String name="Space" value=" " type="char"/>
+        <String name="AcceptValue" value="*/*"/>
+        <String name="Newline" value="\r\n"/>
+        <String name="Newline" value="\r\n"/>
+    </DataModel>
+</Peach>

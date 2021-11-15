@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Peach version="1.0" author="keitaro" description="MqTT Target">
+    <!-- StateModel要素 -->
+    <StateModel name="MqttBrokerModel" initialState="MqttBrokerState">
+      <State name="MqttBrokerState">
+        <Action type="output">
+          <DataModel ref="PublishCommand"/>
+        </Action>
+      </State>
+    </StateModel>
+
+    <!-- Test要素 -->
+    <Test name="DefaultTest">
+      <StateModel ref="MqttBrokerModel"/>
+      <Publisher class="mqtt.Broker">
+        <Param name="topic" value="/topic/qos0"/>
+        <Param name="port" value="1883"/>
+      </Publisher>
+      <Strategy class="rand.RandomMutationStrategy" params="MaxFieldsToMutate=3"/>
+    </Test>
+
+    <!-- Run要素 -->
+    <Run name="DefaultRun" description="Run (mqtt)">
+      <Test ref="DefaultTest"/>
+      <Logger class="logger.Filesystem">
+        <Param name="path" value="Logs/Mqtt"/>
+      </Logger>
+    </Run>
+</Peach>

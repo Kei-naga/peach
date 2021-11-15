@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+print("peach")
 import os
 import re
 import sys
@@ -43,10 +45,14 @@ def cleanup():
 
 
 def save_peach_pid(agent=False):
+    #現在のプロセスID取得
     pid = os.getpid()
+    # tempファイル作成(agentがFaleseだったら'peach.[プロセスID]'、Trueだったらpeach.agent.[プロセスID])
     filename = os.path.join(tempfile.gettempdir(), 'peach.%s%d' % ('' if not agent else 'agent.', pid))
+    # プロセスId記録しとく
     with open(filename, 'w') as fd:
         fd.write(str(pid))
+    # プロセスリストに入れとく
     peach_pids.append(filename)
 
 
@@ -56,6 +62,7 @@ def fatal(msg):
 
 
 if __name__ == '__main__':
+    # helpとかのコマンド
     parser = argparse.ArgumentParser(description='Peach Runtime')
     parser.add_argument('-pit', metavar='path', help='pit file')
     parser.add_argument('-run', metavar='name', help='run name')
@@ -241,6 +248,7 @@ if __name__ == '__main__':
 
     logging.info("Using random seed: %s" % peachrun.SEED)
     try:
+        # engine.runへ
         peachrun.Run(args)
     except PeachException as e:
         logging.exception(e.msg)

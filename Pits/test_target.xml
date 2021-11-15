@@ -1,0 +1,30 @@
+<!-- Target PITファイル -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<Peach version="1.0"  author="who3411" description="curl HttpRequestHeader">
+    <!-- StateModel要素 -->
+    <StateModel name="HttpRequest" initialState="SendRequest">
+        <State name="SendRequest">
+            <Action type="output">
+                <DataModel ref="HttpRequestHeader"/>
+            </Action>
+        </State>
+    </StateModel>
+
+    <!-- Test要素 -->
+    <Test name="DefaultTest">
+        <StateModel ref="HttpRequest"/>
+        <Publisher class="tcp.Tcp">
+            <Param name="host" value="192.168.0.192"/>
+            <Param name="port" value="8000"/>
+        </Publisher>
+        <Strategy class="rand.RandomMutationStrategy" params="MaxFieldsToMutate=4"/>
+    </Test>
+
+    <!-- Run要素 -->
+    <Run name="DefaultRun" description="Run (HttpRequestHeader)">
+        <Test ref="DefaultTest"/>
+        <Logger class="logger.Filesystem">
+            <Param name="path" value="Logs/HttpRequestHeader"/>
+        </Logger>
+    </Run>
+</Peach>
