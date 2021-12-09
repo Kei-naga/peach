@@ -511,7 +511,9 @@ class Engine(object):
                     try:
                         print("Run the test")
                         actionValues = stateEngine.run(mutator)
-                        print("o")
+                        # Pause as needed
+                        time.sleep(3)
+                        #time.sleep(run.waitTime)
                     except RedoTestException:
                         raise
                     except MemoryError:
@@ -528,8 +530,15 @@ class Engine(object):
                             raise PeachException("Error: First test case failed: ", e)
                         # Otherwise ignore any SoftExceptions and head for next iteration.
                         pass
-                    # Pause as needed
-                    time.sleep(run.waitTime)
+                    #except: # when run stop, recordsing now_fazz and restarting run
+                        #logging.warning("run stop")
+                        #try:
+                            #logging.info(stateEngine.now_fazz)
+                            #for p in test.publishers:
+                                #p.initialize()
+                        #except:
+                            #break
+                        #pass
                     mutator.onTestCaseFinished(test, testCount, stateEngine)
                     # Notify
                     if not countOnly:

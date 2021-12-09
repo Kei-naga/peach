@@ -7,10 +7,10 @@ import threading
 class MyBroker:
     def __init__(self, port):
         print("create broker")
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('', port))
-        s.listen(5)
-        self.clientsocket, self.address = s.accept()
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.bind(('', port))
+        self.s.listen(5)
+        self.clientsocket, self.address = self.s.accept()
 
     def set_subscribe(self):
         clientsocket = self.clientsocket
@@ -28,7 +28,7 @@ class MyBroker:
     def pingcheck(self):
         while True:
             ping = self.clientsocket.recv(1024)
-            print("sending ping!")
+            print("getting ping!")
             pingresp = Pingresp()
             pingresp.send(self.clientsocket)
             del ping
@@ -37,8 +37,14 @@ class MyBroker:
         publish = Publish(topic, data)
         publish.send(self.clientsocket)
 
-    def close(self):
+    def client_close(self):
         self.clientsocket.close()
+        print("client socket close")
+
+    def close(self):
+        if self.process.s is not None:
+            self.process.client_close()
+        self.s.close()
         print("socket close")
 
 if __name__ == '__main__':

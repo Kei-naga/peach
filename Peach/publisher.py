@@ -101,7 +101,7 @@ class Publisher(object):
     def __init__(self):
         #: Indicates which method should be called.
         print("make publisher")
-        self.withNode = False
+        self.withNode = True
         self.publisherBuffer = None
 
     def initialize(self):

@@ -105,7 +105,6 @@ class StateEngine(object):
             obj = self._getStateByName(self.stateMachine.initialState)
             if obj is None:
                 raise PeachException("Unable to locate initial state \"%s\"." % self.stateMachine.initialState)
-
             self._runState(obj, mutator)
 
         except StateChangeStateException as e:
@@ -326,7 +325,6 @@ class StateEngine(object):
         Debug(1, "\nStateEngine._runAction: %s" % action.name)
 
         mutator.onActionStarting(action.parent, action)
-
         # If publisher property has been given, use referenced Publisher; otherwise the first one
         if action.publisher is not None:
             pub = self._getPublisherByName(action.publisher)
@@ -428,9 +426,12 @@ class StateEngine(object):
             Debug(1, "Action output sending %d bytes" % len(action.value))
 
             if not pub.withNode:
+                print("0")
                 pub.send(action.value)
+                self.now_fazz = action.value
             else:
                 pub.sendWithNode(action.value, action.template)
+                self.now_fazz = action.value
 
             # Save the data filename used for later matching
             if action.data is not None and action.data.fileName is not None:
