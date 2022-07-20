@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Peach version="1.0" author="keitaro" description="MQTT DataModels">
+  <Include ns="default" src="file:../../Mqtt/mqttdefaults.xml"/>
+
+  <DataModel name="PublishCommand">
+    <String name="topic" value="/topic/qos0"/>
+    <String name="message" value="0"/>
+  </DataModel>
+</Peach>
